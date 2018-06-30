@@ -5,6 +5,13 @@ Rails.application.routes.draw do
       resources :publishers, only: [] do
         resources :shops, only: [:index]
       end
+      resources :shops, only: [] do
+        resources :books, only: [] do
+          member do
+            post 'sell'
+          end
+        end
+      end
     end
   end
 end
