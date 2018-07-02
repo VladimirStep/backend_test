@@ -13,15 +13,17 @@ class Shop < ApplicationRecord
       INNER JOIN (
         SELECT
           shop_id,
-          SUM(sold) AS books_sold_count
+          SUM(sold) AS books_sold_count,
+          SUM(in_stock) AS books_in_stock_count
         FROM
           stock_records
         INNER JOIN books ON books.id = stock_records.book_id
         INNER JOIN publishers ON publishers.id = books.publisher_id
-        WHERE (stock_records.in_stock > 0) AND (publishers.id = #{publisher_id})
+        WHERE publishers.id = #{publisher_id}
         GROUP BY
           shop_id
       ) rating ON rating.shop_id = shops.id
+      WHERE rating.books_in_stock_count > 0
       ORDER BY
         rating.books_sold_count DESC;
     SQL
@@ -29,6 +31,8 @@ class Shop < ApplicationRecord
   end
 
   def publisher_books
-    books.where(publisher_id: publisher_id)
+    books.select("books.*, #{id} AS shop_id ")
+        .where(publisher_id: publisher_id)
+        .where('stock_records.in_stock > ?', 0)
   end
 end
