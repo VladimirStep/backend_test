@@ -23,12 +23,6 @@ RSpec.describe Shop, type: :model do
         expect(shop.class).to respond_to(:by_sold_publisher_books)
       end
     end
-
-    context 'executes methods correctly' do
-      context 'self.by_sold_publisher_books' do
-
-      end
-    end
   end
 
   describe 'public instance methods' do

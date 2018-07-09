@@ -5,6 +5,7 @@ module ErrorsHandler
     rescue_from ActiveRecord::RecordNotFound, with: :active_record_not_found
     rescue_from ActiveRecord::RecordInvalid, with: :unprocessable_entity
     rescue_from ActionController::ParameterMissing, with: :unprocessable_params
+    rescue_from SellBook::SellBookError, with: :unprocessable_sell
   end
 
   def active_record_not_found(exception)
@@ -16,6 +17,10 @@ module ErrorsHandler
   end
 
   def unprocessable_params(exception)
+    render json: { error: "#{exception.message}" }, status: :unprocessable_entity
+  end
+
+  def unprocessable_sell(exception)
     render json: { error: "#{exception.message}" }, status: :unprocessable_entity
   end
 end

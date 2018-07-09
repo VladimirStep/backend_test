@@ -17,10 +17,4 @@ RSpec.describe StockRecord, type: :model do
     it { should belong_to(:book) }
     it { should belong_to(:shop) }
   end
-
-  describe 'public instance methods' do
-    context 'responds to its methods' do
-      it { should respond_to(:sell_book) }
-    end
-  end
 end

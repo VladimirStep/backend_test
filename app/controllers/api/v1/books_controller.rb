@@ -3,11 +3,8 @@ module Api
     class BooksController < ApplicationController
       def sell
         stock = StockRecord.find_by!(book_id: params[:id], shop_id: params[:shop_id])
-        if stock.sell_book(number_of_copies)
-          head :no_content
-        else
-          render json: { error: stock.errors.full_messages }, status: 422
-        end
+        SellBook.new(stock, number_of_copies).call
+        head :no_content
       end
 
       private

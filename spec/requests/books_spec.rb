@@ -36,7 +36,7 @@ RSpec.describe 'Requests to BooksController', type: :request do
 
       it 'process request and change records' do
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(json).to eq(error: ['Out of stock'])
+        expect(json).to eq(error: 'Out of stock')
         stock.reload
         expect(stock.sold).to eq(3)
         expect(stock.in_stock).to eq(1)
